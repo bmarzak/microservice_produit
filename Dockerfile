@@ -1,4 +1,4 @@
-FROM openjdk:8
+FROM java:8
 EXPOSE 9001
 ARG JAR_FILE=target/docker-test-project-integration.jar
 COPY ${JAR_FILE} docker-test-project-integration.jar
