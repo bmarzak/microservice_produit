@@ -1,5 +1,12 @@
-FROM java:8
-EXPOSE 9001
-ARG JAR_FILE=target/docker-test-project-integration.jar
-COPY ${JAR_FILE} docker-test-project-integration.jar
-ENTRYPOINT ["java","-jar","/docker-test-project-integration.jar"]
+FROM jenkins/jenkins:lts
+USER root
+
+RUN mkdir -p /tmp/download && \
+ curl -L https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz | tar -xz -C /tmp/download && \
+ rm -rf /tmp/download/docker/dockerd && \
+ mv /tmp/download/docker/docker* /usr/local/bin/ && \
+ rm -rf /tmp/download && \
+ groupadd -g 999 docker && \
+ usermod -aG staff,docker jenkins
+
+USER jenkins
